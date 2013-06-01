@@ -1,0 +1,40 @@
+[
+     {
+        "id": "tools",
+        "children":
+        [{
+            "caption": "SublimeREPL",
+            "mnemonic": "r",
+            "id": "SublimeREPL",
+            "children":
+            [
+                {"caption": "QStudio",
+                "id": "QStudio",
+
+                 "children":[
+                    {"command": "repl_open",
+                     "caption": "QStudio REPL",
+                     "id": "repl_qstudio",
+                     "mnemonic": "s",
+                     "args": {
+                        "type": "subprocess",
+                        "encoding": "utf8",
+                        "external_id": "q",
+                        "cmd": {"linux": ["scala", "-cp", "${packages}/SublimeREPL/config/QStudio/studio.jar", "-i","${packages}/SublimeREPL/config/QStudio/start.scala" ],
+                                "osx": ["scala", "-cp", "${packages}/SublimeREPL/config/QStudio/studio.jar", "-i","${packages}/SublimeREPL/config/QStudio/start.scala" ],
+                                "windows": ["scala.bat", "-cp", "${packages}\\SublimeREPL\\config\\QStudio\\studio.jar", "-i","${packages}\\SublimeREPL\\config\\QStudio\\start.scala" ]},
+                        "soft_quit": "\nexit\n",
+                        "cwd": "$file_path",
+                        "cmd_postfix": "\n", 
+                        "extend_env": {"osx": {"EMACS": "1", "PATH": "{PATH}:/usr/local/bin"},
+                                       "linux": {"EMACS": "1", "PATH": "{PATH}:/usr/local/bin"},
+                                       "windows": {"EMACS": "1"}},
+                        "suppress_echo": false, 
+                        "syntax": "Packages/Q/Q.tmLanguage"
+                        }
+                    } 
+                ]}
+            ]
+        }]
+    }
+]

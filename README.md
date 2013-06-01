@@ -1,4 +1,4 @@
 QStudio
 =======
 
-SublimeQStudio - run StudioForKdb+ inside ST2
+QStudio - run StudioForKdb+ inside ST2

@@ -1,0 +1,10 @@
+[
+	{
+        "caption": "SublimeREPL: QStudio",
+        "command": "run_existing_window_command", "args":
+        {
+            "id": "repl_qstudio",
+            "file": "config/QStudio/Main.sublime-menu"
+        }
+    }
+]
