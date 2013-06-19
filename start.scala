@@ -2,16 +2,7 @@
 import scala.util.matching.Regex
 
 def startStudio() : studio.ui.Studio = {
-
-	var ss = new studio.kdb.Server();
-	ss.setName("default");
-	ss.setHost("localhost");
-	ss.setPort(8888);
-	ss.setUsername("testuser");
-	ss.setPassword("testpassword");
-	ss.setAuthenticationMechanism("Username and password");
 	return sublime.SublimeVersion.init(Array[String]());
-
 }
 
 var sub = startStudio()
