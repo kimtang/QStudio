@@ -6,6 +6,8 @@ from collections import defaultdict
 import tempfile
 import binascii
 import re
+import os.path
+# import json
 
 try:
     from .sublimerepl import manager, SETTINGS_FILE
@@ -113,49 +115,48 @@ class QChangeServer(sublime_plugin.TextCommand):
     def run(self, edit, scope="selection", action="send"):
         v = self.view
         text = v.substr(sublime.Region(0, v.size()))
-        regex = re.compile("(/\s.+:.+:\d{1,4}:.*:.*)")
-        r = regex.search(text)
-        if not r:
+        # regex = re.compile("(/\s.+:.+:\d*:.*:.*)")
+        # r = regex.findall(text)
+        text = self.get_hp(text)
+
+        text = text + self.get_sbl()
+        self.text = list(set(text))
+        self.action = action
+        print(text)
+        if len(text) == 0 :
             return
 
-        text = r.groups()
-        text = text[0]
+        if self.text:
+            sublime.active_window().show_quick_panel(self.text, self.on_chosen)
 
-        text = "addSetServer(\"" + text + "\")"
-        print (text)
-        cmd = "repl_" + action
-        self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": text})
+    def get_hp(self,text):
+        regex = re.compile("(/\s.+:.+:\d*:.*:.*)")
+        return regex.findall(text)
+
 
     def repl_external_id(self):
         return self.view.scope_name(0).split(" ")[0].split(".")[1]
 
-    def selected_text(self):
-        v = self.view
-        parts = [v.substr(region) for region in v.sel()]
-        return "".join(parts)
+    def get_sbl(self):
+        fname = sublime.active_window().project_file_name()
+        if not os.path.isfile(fname):
+            return []
+        json_data=open(fname).read()
+        project = json.loads(json_data)
+        folders = [ p["path"]+"\\cfg\\system.sbl" for p in project["folders"] ]
+        folders = [f for f in folders if os.path.isfile(f) ]        
+        folders = [self.get_hp(open(f).read()) for f in folders]
+        folders = [item for sublist in folders for item in sublist]
 
-    def selected_blocks(self):
-        # TODO: Clojure only for now
-        v = self.view
-        strs = []
-        old_sel = list(v.sel())
-        v.run_command("expand_selection", {"to": "brackets"})
-        v.run_command("expand_selection", {"to": "brackets"})
-        for s in v.sel():
-            strs.append(v.substr(s))
-        v.sel().clear()
-        for s in old_sel:
-            v.sel().add(s)
-        return "\n\n".join(strs)
+        return folders
 
-    def selected_lines(self):
-        v = self.view
-        parts = []
-        for sel in v.sel():
-            for line in v.lines(sel):
-                parts.append(v.substr(line))
-        return "\n".join(parts)
+    def on_chosen(self,index):
+        if index == -1 :
+            return
+        print(self.text)
+        text = self.text
+        text = text[index]
 
-    def selected_file(self):
-        v = self.view
-        return v.substr(sublime.Region(0, v.size()))
+        text = "addSetServer(\"" + text + "\")"
+        cmd = "repl_" + self.action
+        self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": text})
