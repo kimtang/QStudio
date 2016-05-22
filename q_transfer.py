@@ -120,7 +120,7 @@ class QChangeServer(sublime_plugin.TextCommand):
         text = self.get_hp(text)
 
         text = text + self.get_sbl()
-        self.text = list(set(text))
+        self.text = [ v for (i,v) in enumerate(text) if v not in text[0:i] ]
         self.action = action
         print(text)
         if len(text) == 0 :
