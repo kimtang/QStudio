@@ -7,7 +7,7 @@ import tempfile
 import binascii
 import re
 import os.path
-# import json
+import json
 
 try:
     from .sublimerepl import manager, SETTINGS_FILE
@@ -141,9 +141,15 @@ class QChangeServer(sublime_plugin.TextCommand):
         fname = sublime.active_window().project_file_name()
         if not os.path.isfile(fname):
             return []
+        print(fname)
         json_data=open(fname).read()
+        print(json_data)
         project = json.loads(json_data)
-        folders = [ p["path"]+"\\cfg\\system.sbl" for p in project["folders"] ]
+        # project = sublime.load_resource(fname)
+        
+        os.path.dirname(sublime.active_window().project_file_name())
+
+        folders = [ p["path"]+"\\cfg\\system.sbl" for p in project["folders"]+[{'path':os.path.dirname(sublime.active_window().project_file_name()) }] ]
         folders = [f for f in folders if os.path.isfile(f) ]        
         folders = [self.get_hp(open(f).read()) for f in folders]
         folders = [item for sublist in folders for item in sublist]

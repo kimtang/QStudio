@@ -21,8 +21,9 @@
                         "encoding": "utf8",
                         "external_id": "q",
                         "cmd": {"linux": ["scala", "-cp", "${packages}/SublimeREPL/config/QStudio/studio.jar", "-i","${packages}/SublimeREPL/config/QStudio/start.scala" ],
-                                "osx": ["scala", "-cp", "${packages}/SublimeREPL/config/QStudio/studio.jar", "-i","${packages}/SublimeREPL/config/QStudio/start.scala" ],
-                                "windows": ["scala.bat", "-cp", "${packages}\\SublimeREPL\\config\\QStudio\\studio.jar", "-i","${packages}\\SublimeREPL\\config\\QStudio\\start.scala" ]},
+                                "osx": ["scala", "-cp", "%CLASSPATH%", "-i","${packages}/SublimeREPL/config/QStudio/start.scala" ],                                
+                                "windows": ["scala", "-cp", "%CLASSPATH%", "-i","${packages}\\SublimeREPL\\config\\QStudio\\start.scala" ]
+                             },
                         "soft_quit": "\nexit\n",
                         "cwd": "$file_path",
                         "cmd_postfix": "\n", 
