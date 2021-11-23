@@ -62,7 +62,7 @@ class Q(sublime_plugin.TextCommand):
 
         print(text)
         
-        orig_repl = "executeK4Query(\"" + raw(text)+ "\")";
+        orig_repl = ":executeK4Query(\"" + raw(text)+ "\")";
         cmd = "repl_" + action
         self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": orig_repl})
 
@@ -102,7 +102,7 @@ class Q(sublime_plugin.TextCommand):
 
 class QChart(sublime_plugin.TextCommand):
     def run(self, edit, scope="selection", action="send"):
-        orig_repl = "chart()"
+        orig_repl = ":chart"
         
         cmd = "repl_" + action
         self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": orig_repl})
@@ -163,6 +163,6 @@ class QChangeServer(sublime_plugin.TextCommand):
         text = self.text
         text = text[index]
 
-        text = "addSetServer(\"" + text + "\")"
+        text = ":addSetServer(\"" + text + "\");\n"
         cmd = "repl_" + self.action
         self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": text})
