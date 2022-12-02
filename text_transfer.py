@@ -92,12 +92,6 @@ def q_sender(repl, text, view=None, repl_view=None):
     print(text0)    
     default_sender(repl, text0, view, repl_view)
 
-@sender("k")
-def k_sender(repl, text, view=None, repl_view=None):
-
-    text = "ConEmuC -GuiMacro:0 Paste(0,\"" + raw(text)+ "\");\n";
-    print(text)
-    default_sender(repl, text, view, repl_view)
 
 @sender("coffee")
 def coffee(repl, text, view=None, repl_view=None):

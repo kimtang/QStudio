@@ -7,7 +7,6 @@ import tempfile
 import binascii
 import re
 import os.path
-import json
 
 try:
     from .sublimerepl import manager, SETTINGS_FILE
@@ -63,9 +62,8 @@ class Q(sublime_plugin.TextCommand):
         print(text)
         
         # orig_repl = ":executeK4Query(\"" + raw(text)+ "\")";
-        orig_repl = text
         cmd = "repl_" + action
-        self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": orig_repl})
+        self.view.window().run_command(cmd, {"external_id": self.repl_external_id(), "text": text})
 
     def repl_external_id(self):
         return self.view.scope_name(0).split(" ")[0].split(".")[1]
@@ -101,7 +99,7 @@ class Q(sublime_plugin.TextCommand):
         v = self.view
         return v.substr(sublime.Region(0, v.size()))
 
-class QChart(sublime_plugin.TextCommand):  
+class QChart(sublime_plugin.TextCommand):
     def run(self, edit, scope="selection", action="send"):
         orig_repl = ":chart"
         
@@ -121,9 +119,10 @@ class QChangeServer(sublime_plugin.TextCommand):
         text = self.get_hp(text)
 
         text = text + self.get_sbl()
+        # print(text)
         self.text = [ v for (i,v) in enumerate(text) if v not in text[0:i] ]
         self.action = action
-        print(text)
+        # print(text)
         if len(text) == 0 :
             return
 
@@ -141,10 +140,9 @@ class QChangeServer(sublime_plugin.TextCommand):
     def get_sbl(self):
         project_data = sublime.active_window().project_data()
         project = project_data.get("folders")
-
         if not project:
-            project = []
-        project = project + [{'path' : os.path.dirname(sublime.active_window().project_file_name()) }]
+            project=[]
+        project = project + [{'path':os.path.dirname(sublime.active_window().project_file_name()) }]
 
         folders = [ p["path"]+"\\cfg\\system.sbl" for p in project ]
         folders = [f for f in folders if os.path.isfile(f) ]        
